@@ -17,11 +17,10 @@ class LinkedList
     current_node
   end
 
-  def at(index)
-    # returns the node at the given index
+  def replace(value)
     current_node = @head
-    index.times { |_i| current_node = current_node.next }
-    current_node
+    current_node = current_node.next until current_node.data[0] == value[0]
+    current_node.data = value
   end
 
   def append(value)
@@ -35,60 +34,51 @@ class LinkedList
     end
   end
 
-  def prepend(value)
-    # adds a new node containing value to the start of the list
-    new_head = Node.new(value)
-    new_head.next = @head unless @head.nil?
-    @head = new_head
-  end
-
-  def size
-    # returns the total number of nodes in the list
-    counter = 0
+  def to_s
+    # present the linked list as string format: ( value ) -> ( value ) -> ( value ) -> nil
     current_node = @head
+    result = ''
     until current_node.nil?
-      counter += 1
+      result += "( #{current_node.data} ) -> "
       current_node = current_node.next
     end
-    counter
+    "#{result}nil"
   end
 
-  def pop
-    # removes the last element from the list
-    return if head.nil?
-
-    if @head.next.nil?
-      popped_node = @head
-      @head = nil
-    else
-      current_node = @head
-      current_node = current_node.next until current_node.next.next.nil?
-      popped_node = current_node.next
-      current_node.next = nil
-    end
-
-    popped_node
-  end
-
-  def shift
-    # removes the first element from the list
+  def entries
+    entry_list = []
     return if @head.nil?
 
-    previous_head = @head
-    @head = @head.next
-    previous_head.next = nil
-    previous_head
-  end
-
-  def contains?(value)
-    # returns true if the passed in value is in the list and otherwise returns false.
     current_node = @head
     until current_node.nil?
-      return true if current_node.data == value
-
+      entry_list << current_node.data
       current_node = current_node.next
     end
-    false
+    entry_list
+  end
+
+  def values
+    values_list = []
+    return if @head.nil?
+
+    current_node = @head
+    until current_node.nil?
+      values_list << current_node.data[-1]
+      current_node = current_node.next
+    end
+    values_list
+  end
+
+  def keys
+    key_list = []
+    return if @head.nil?
+
+    current_node = @head
+    until current_node.nil?
+      key_list << current_node.data[0]
+      current_node = current_node.next
+    end
+    key_list
   end
 
   def find(key)
@@ -102,29 +92,15 @@ class LinkedList
     'nil'
   end
 
-  def to_s
-    # present the linked list as string format: ( value ) -> ( value ) -> ( value ) -> nil
+  def size
+    # returns the total number of nodes in the list
+    counter = 0
     current_node = @head
-    result = ''
     until current_node.nil?
-      result += "( #{current_node.data} ) -> "
+      counter += 1
       current_node = current_node.next
     end
-    "#{result}nil"
-  end
-
-  def insert_at(value, index)
-    # inserts a new node with the provided value at the given index.
-    return prepend(value) if index.zero?
-    return puts "Index #{index} is out of bounds." if index >= size || index.negative?
-
-    current_node = @head
-
-    (index - 1).times { |_i| current_node = current_node.next if current_node.next }
-
-    new_node = Node.new(value)
-    new_node.next = current_node.next
-    current_node.next = new_node
+    counter
   end
 
   def remove(key)
