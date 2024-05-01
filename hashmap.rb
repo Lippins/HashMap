@@ -59,6 +59,7 @@ class HashMap
         puts '' # New line after each bucket
       end
     end
+    puts "#{length} entries in total"
   end
 
   def needs_resize?
@@ -88,7 +89,9 @@ class HashMap
 
   def clear
     # Removes all entries from the HashMap
+    @capacity = 16
     @buckets = Array.new(@capacity) { LinkedList.new }
+    @num_of_entries = 0
   end
 
   def length
@@ -99,11 +102,13 @@ class HashMap
   def remove(key)
     index = to_index(key)
 
-    @buckets[index].remove(key)
+    removed_value = @buckets[index].remove(key)
+    @num_of_entries -= 1 unless removed_value.nil?
+    removed_value
   end
 
   def has?(key)
-    get(key) != 'nil'
+    !get(key).nil?
   end
 
   def get(key)
@@ -116,7 +121,7 @@ class HashMap
 
     key.each_char { |char| hash_code = hash_code * prime_number + char.ord }
 
-    p hash_code
+    hash_code
   end
 
   def check_index(index)
@@ -130,19 +135,18 @@ end
 
 test = HashMap.new
 
-puts test.set('Siju', '29')
 test.set('Tito', '31')
 test.set('Sarah', '29')
 test.set('Israel', '29')
-p test.needs_resize?
+
 test.set('Shola', '30')
 test.set('Pheekun', '30')
 test.set('Nath', '37')
 test.set('Ameenah', '35')
-p test.needs_resize?
+
 test.set('Ameenah', '40')
 test.set('Rahmat', '10')
-p test.needs_resize?
+
 test.set('Sydney', '12')
 test.set('Luckey', '18')
 test.set('Jide', '18')
@@ -151,8 +155,10 @@ test.set('Amazon', '18')
 test.set('Gelato', '18')
 test.set('Squarespace', '18')
 test.set('Square', '18')
-puts test.get('food')
-puts test.get('drink')
+
+test.pretty_print
+puts test.remove('Square')
+puts test.has?('Gelata')
 
 # puts test.has?('food')
 # puts test.has?('drink')
@@ -161,9 +167,8 @@ puts test.get('drink')
 # Linked list has to be modified to account for objects
 # puts test.remove('food')
 # puts test.remove('orange')
-puts test.length
-p test.keys
-p test.values
-p test.entries
-p test.needs_resize?
-test.pretty_print
+# puts test.length
+# p test.keys
+# p test.values
+# p test.entries
+# p test.needs_resize?

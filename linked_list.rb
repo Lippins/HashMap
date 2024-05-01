@@ -89,7 +89,7 @@ class LinkedList
 
       current_node = current_node.next
     end
-    'nil'
+    nil
   end
 
   def size
@@ -104,7 +104,7 @@ class LinkedList
   end
 
   def remove(key)
-    return 'nil' if head.nil?
+    return nil if head.nil?
 
     if @head.data[0] == key
       value = @head.data[-1]
@@ -122,6 +122,6 @@ class LinkedList
       return value
     end
 
-    'nil'
+    nil
   end
 end
