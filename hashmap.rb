@@ -23,27 +23,6 @@ class HashMap
     @num_of_entries += 1
   end
 
-  def grow
-    # Grows bucket size
-    @capacity *= 2
-    new_buckets = Array.new(@capacity) { LinkedList.new }
-
-    @buckets = copy_entries_to(new_buckets)
-  end
-
-  def copy_entries_to(new_buckets)
-    # Copies over entries from older HashMap to a new one
-    @buckets.each do |bucket|
-      current_node = bucket.head
-      while current_node
-        new_index = to_index(current_node.data[0])
-        new_buckets[new_index].append(current_node.data)
-        current_node = current_node.next
-      end
-    end
-    new_buckets
-  end
-
   def pretty_print
     @buckets.each_with_index do |bucket, index|
       print "🪣 Bucket #{index}: "
@@ -60,10 +39,6 @@ class HashMap
       end
     end
     puts "#{length} entries in total"
-  end
-
-  def needs_resize?
-    (length.to_f / @buckets.length) > 0.75
   end
 
   def entries
@@ -115,6 +90,33 @@ class HashMap
     @buckets[to_index(key)].find(key)
   end
 
+  private
+
+  def grow
+    # Grows bucket size
+    @capacity *= 2
+    new_buckets = Array.new(@capacity) { LinkedList.new }
+
+    @buckets = copy_entries_to(new_buckets)
+  end
+
+  def copy_entries_to(new_buckets)
+    # Copies over entries from older HashMap to a new one
+    @buckets.each do |bucket|
+      current_node = bucket.head
+      while current_node
+        new_index = to_index(current_node.data[0])
+        new_buckets[new_index].append(current_node.data)
+        current_node = current_node.next
+      end
+    end
+    new_buckets
+  end
+
+  def needs_resize?
+    (length.to_f / @buckets.length) > 0.75
+  end
+
   def hash(key)
     hash_code = 0
     prime_number = 31
@@ -124,51 +126,7 @@ class HashMap
     hash_code
   end
 
-  def check_index(index)
-    raise IndexError if index.negative? || index >= @buckets.length
-  end
-
   def to_index(key)
     hash(key) % @capacity
   end
 end
-
-test = HashMap.new
-
-test.set('Tito', '31')
-test.set('Sarah', '29')
-test.set('Israel', '29')
-
-test.set('Shola', '30')
-test.set('Pheekun', '30')
-test.set('Nath', '37')
-test.set('Ameenah', '35')
-
-test.set('Ameenah', '40')
-test.set('Rahmat', '10')
-
-test.set('Sydney', '12')
-test.set('Luckey', '18')
-test.set('Jide', '18')
-test.set('Shopify', '18')
-test.set('Amazon', '18')
-test.set('Gelato', '18')
-test.set('Squarespace', '18')
-test.set('Square', '18')
-
-test.pretty_print
-puts test.remove('Square')
-puts test.has?('Gelata')
-
-# puts test.has?('food')
-# puts test.has?('drink')
-# puts test.has('drink')
-# puts test.has('food')
-# Linked list has to be modified to account for objects
-# puts test.remove('food')
-# puts test.remove('orange')
-# puts test.length
-# p test.keys
-# p test.values
-# p test.entries
-# p test.needs_resize?
