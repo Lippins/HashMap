@@ -17,15 +17,14 @@ class HashMap
 
     index = to_index(key)
     bucket = @buckets[index]
-    @num_of_entries += 1
     return bucket.replace([key, value]) if has?(key)
 
     bucket.append([key, value])
+    @num_of_entries += 1
   end
 
   def grow
     # Grows bucket size
-    puts 'Growing Buckets'
     @capacity *= 2
     new_buckets = Array.new(@capacity) { LinkedList.new }
 
@@ -34,7 +33,6 @@ class HashMap
 
   def copy_entries_to(new_buckets)
     # Copies over entries from older HashMap to a new one
-    puts 'copying entries to new bucket'
     @buckets.each do |bucket|
       current_node = bucket.head
       while current_node
@@ -44,6 +42,23 @@ class HashMap
       end
     end
     new_buckets
+  end
+
+  def pretty_print
+    @buckets.each_with_index do |bucket, index|
+      print "🪣 Bucket #{index}: "
+      if bucket.head.nil?
+        puts 'empty'
+      else
+        current_node = bucket.head
+        while current_node
+          print "[#{current_node.data[0]}: #{current_node.data[1]}]"
+          current_node = current_node.next
+          print ' -> ' unless current_node.nil?
+        end
+        puts '' # New line after each bucket
+      end
+    end
   end
 
   def needs_resize?
@@ -65,6 +80,7 @@ class HashMap
   end
 
   def values
+    # Returns an array containing all values in the Hashmap
     @buckets.each_with_object([]) do |bucket, all_keys|
       all_keys.concat(bucket.values) unless bucket.values.nil?
     end
@@ -114,29 +130,29 @@ end
 
 test = HashMap.new
 
-# puts test.set('Siju', '29')
-# test.set('Tito', '31')
-# test.set('Sarah', '29')
+puts test.set('Siju', '29')
+test.set('Tito', '31')
+test.set('Sarah', '29')
 test.set('Israel', '29')
-# p test.needs_resize?
-# test.set('Shola', '30')
-# test.set('Pheekun', '30')
-# test.set('Nath', '37')
-# test.set('Ameenah', '35')
-# p test.needs_resize?
-# test.set('Ameenah', '40')
-# test.set('Rahmat', '10')
-# p test.needs_resize?
-# test.set('Sydney', '12')
-# test.set('Luckey', '18')
+p test.needs_resize?
+test.set('Shola', '30')
+test.set('Pheekun', '30')
+test.set('Nath', '37')
+test.set('Ameenah', '35')
+p test.needs_resize?
+test.set('Ameenah', '40')
+test.set('Rahmat', '10')
+p test.needs_resize?
+test.set('Sydney', '12')
+test.set('Luckey', '18')
 test.set('Jide', '18')
-# test.set('Shopify', '18')
-# test.set('Amazon', '18')
-# test.set('Gelato', '18')
-# test.set('Squarespace', '18')
-# test.set('Square', '18')
-# puts test.get('food')
-# puts test.get('drink')
+test.set('Shopify', '18')
+test.set('Amazon', '18')
+test.set('Gelato', '18')
+test.set('Squarespace', '18')
+test.set('Square', '18')
+puts test.get('food')
+puts test.get('drink')
 
 # puts test.has?('food')
 # puts test.has?('drink')
@@ -150,4 +166,4 @@ p test.keys
 p test.values
 p test.entries
 p test.needs_resize?
-puts test
+test.pretty_print
