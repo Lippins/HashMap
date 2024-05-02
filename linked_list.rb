@@ -82,7 +82,6 @@ class LinkedList
   end
 
   def find(key)
-    # returns the index of the node containing value, or nil if not found.
     current_node = @head
     while current_node
       return current_node.data[-1] if current_node.data[0] == key
