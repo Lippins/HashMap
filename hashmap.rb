@@ -87,7 +87,7 @@ class HashMap
   end
 
   def get(key)
-    @buckets[to_index(key)].find(key) { |data, key| data[0] == key }
+    @buckets[to_index(key)].find(key)
   end
 
   # private

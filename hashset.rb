@@ -17,13 +17,10 @@ class HashSet < HashMap
     bucket.append(key)
     @num_of_entries += 1
   end
-
-  def get(key)
-    @buckets[to_index(key)].find(key) { |data, key| data == key }
-  end
 end
 
 test = HashSet.new
 puts test.capacity
 test.set('green')
 puts test.get('green')
+puts test.has?('green')
