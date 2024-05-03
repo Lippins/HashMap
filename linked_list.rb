@@ -81,10 +81,14 @@ class LinkedList
     key_list
   end
 
-  def find(key)
+  def find(key, &blk)
     current_node = @head
     while current_node
-      return current_node.data[-1] if current_node.data[0] == key
+      if blk.call(current_node.data, key)
+        return current_node.data[-1] if current_node.data.is_a?(Array)
+
+        return current_node.data
+      end
 
       current_node = current_node.next
     end
