@@ -113,10 +113,12 @@ class LinkedList
   end
 
   def match_key?(data, key)
+    # Handles preferential matching for either HashSets or HashMaps
     data.is_a?(Array) ? data[0] == key : data == key
   end
 
   def return_value(data)
+    # Handles value returns for either HashSets or HashMaps
     data.is_a?(Array) ? data[-1] : data
   end
 end
