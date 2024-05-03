@@ -34,17 +34,6 @@ class LinkedList
     end
   end
 
-  def to_s
-    # present the linked list as string format: ( value ) -> ( value ) -> ( value ) -> nil
-    current_node = @head
-    result = ''
-    until current_node.nil?
-      result += "( #{current_node.data} ) -> "
-      current_node = current_node.next
-    end
-    "#{result}nil"
-  end
-
   def entries
     entry_list = []
     return if @head.nil?
@@ -84,11 +73,7 @@ class LinkedList
   def find(key)
     current_node = @head
     while current_node
-      if current_node.data.is_a?(Array)
-        return current_node.data[-1] if current_node.data[0] == key
-      elsif current_node.data == key
-        return current_node.data
-      end
+      return return_value(current_node.data) if match_key?(current_node.data, key)
 
       current_node = current_node.next
     end
@@ -109,22 +94,29 @@ class LinkedList
   def remove(key)
     return nil if head.nil?
 
-    if @head.data[0] == key
-      value = @head.data[-1]
+    if match_key?(@head.data, key)
+      value = return_value(@head.data)
       @head = @head.next
       return value
     end
 
     current_node = @head
+    current_node = current_node.next until current_node.next.nil? || match_key?(current_node.next.data, key)
 
-    current_node = current_node.next until current_node.next && current_node.next.data[0] == key
-
-    if current_node.next && current_node.next.data[0] == key
-      value = current_node.next.data[0]
+    if current_node.next && match_key?(current_node.next.data, key)
+      value = return_value(current_node.next.data)
       current_node.next = current_node.next.next
       return value
     end
 
     nil
+  end
+
+  def match_key?(data, key)
+    data.is_a?(Array) ? data[0] == key : data == key
+  end
+
+  def return_value(data)
+    data.is_a?(Array) ? data[-1] : data
   end
 end

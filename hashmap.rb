@@ -90,7 +90,7 @@ class HashMap
     @buckets[to_index(key)].find(key)
   end
 
-  # private
+  private
 
   def grow
     # Grows bucket size
