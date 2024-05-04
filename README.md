@@ -77,7 +77,7 @@ The `pretty_print` method is helpful for visually displaying the contents of the
 #### Usage of `pretty_print`
 
 ```ruby
-# Assuming the HashMap class and an instance have been created and populated
+# Assuming the HashMap class and an instance have been created
 # Let's take a nested array of 20 shopping carts and their creation dates
 
 carts = [['Shopify', 2006], ['Magento', 2008], ['WooCommerce', 2011], ['BigCommerce', 2009], ['PrestaShop', 2007], ['OpenCart', 1998],
@@ -92,7 +92,7 @@ hash_map.pretty_print
 
 #### Expected Output
 
-When you call pretty_print, the output will show how each bucket in the hash map is populated:
+When you call `pretty_print`, the output will show how each bucket in the hash map is populated:
 
 ```bash
 🪣 Bucket 0: empty
