@@ -65,7 +65,7 @@ hash_set.remove("test") # Removes "test" from the set
 ### HashSet
 
 - `add(key)`: Adds a key to the set.
-- `has(key)`: Checks if a key exists in the set.
+- `has?(key)`: Checks if a key exists in the set.
 - `remove(key)`: Removes a key from the set.
 
 ### Additional Method
